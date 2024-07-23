@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 
-export default function Login({handleChange}) {
+export default function Login({onTabChange}) {
 
   const paperStyle = {
     padding: 20,
@@ -46,6 +46,11 @@ export default function Login({handleChange}) {
     password: Yup.string().min(8,"Password minimum length should be 8").required("Required"),
   });
 
+  const handleChange = (event) => {
+    const {name, value} = event.target;
+    fmk.setFieldValue(name, value.trimStart());
+  }
+
   const fmk = useFormik({
     initialValues,
     onSubmit,
@@ -60,9 +65,9 @@ export default function Login({handleChange}) {
           <h2>Sign In</h2>
         </Grid>
         <form onSubmit={fmk.handleSubmit}>
-        <TextField name='email' value={fmk.values.email} onBlur={fmk.handleBlur} onChange={fmk.handleChange} label="Email" variant="standard" placeholder='Enter Email' fullWidth  helperText={fmk.errors.email && fmk.touched.email ?<Typography style={errorStyle}>{fmk.errors.email}</Typography>:""}/>
+        <TextField name='email' value={fmk.values.email} onBlur={fmk.handleBlur} onChange={handleChange} label="Email" variant="standard" placeholder='Enter Email' fullWidth  helperText={fmk.errors.email && fmk.touched.email ?<Typography style={errorStyle}>{fmk.errors.email}</Typography>:""}/>
 
-        <TextField /*type='password'*/ name='password' value={fmk.values.password} onBlur={fmk.handleBlur} onChange={fmk.handleChange} label="Password" variant="standard" placeholder='Enter Password' fullWidth  helperText={fmk.errors.password && fmk.touched.password ?<Typography style={errorStyle}>{fmk.errors.password}</Typography>:""}/>
+        <TextField /*type='password'*/ name='password' value={fmk.values.password} onBlur={fmk.handleBlur} onChange={handleChange} label="Password" variant="standard" placeholder='Enter Password' fullWidth  helperText={fmk.errors.password && fmk.touched.password ?<Typography style={errorStyle}>{fmk.errors.password}</Typography>:""}/>
 
         <FormControlLabel control={
           <Checkbox name='remembereMe' onChange={fmk.handleChange} value={fmk.values.remembereMe} color='primary' />
@@ -73,7 +78,7 @@ export default function Login({handleChange}) {
           <Link href="#" underline="hover">Forgot password ?</Link>
         </Typography>
         <Typography>Do you have an account ?
-          <Link href="#" underline="hover" onClick={()=>handleChange('event', 1)}> Sign Up</Link>
+          <Link href="#" underline="hover" onClick={()=>onTabChange('event', 1)}> Sign Up</Link>
         </Typography>
         
       </Paper>

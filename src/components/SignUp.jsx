@@ -28,7 +28,8 @@ export default function SignUp() {
     name: Yup.string().min(5, "It's too short").max(20, "It's too long").required("Required"),
     email: Yup.string().email("Enter valid email").required("Required"),
     gender:Yup.string().oneOf(['male', 'female', 'other'], "Required").required("Required"),
-    phoneNum: Yup.number().typeError("Enter valid Phone Number").required("Required"),
+
+    phoneNum: Yup.string().matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits").required("Required"),
 
     password: Yup.string().min(8,"Password minimum length should be 8").required("Required"),
 
@@ -37,6 +38,16 @@ export default function SignUp() {
     termsAndConditions: Yup.string().oneOf(['true'], "Accept terms and Conditions")
 
   });
+
+  const handleChange = (event) => {
+    const {name, value} = event.target;
+    if (name === 'phoneNum') {
+      const numericValue = value.replace(/\D/g, ''); // Remove non-numeric characters
+      fmk.setFieldValue(name, numericValue.trimStart());
+    } else {
+      fmk.setFieldValue(name, value.trimStart());
+    }
+  }
 
   const fmk = useFormik({
     initialValues,
@@ -76,16 +87,16 @@ export default function SignUp() {
           <Typography variant='caption'>Please fill this form to create an account !</Typography>
         </Grid>
         <form onSubmit={fmk.handleSubmit}>
-          <TextField label="Name" onChange={fmk.handleChange} onBlur={fmk.handleBlur} value={fmk.values.name} name='name' variant="standard" placeholder='Enter Name' fullWidth helperText={fmk.touched.name && fmk.errors.name?<Typography style={errorStyle}>{fmk.errors.name}</Typography>:""}  />
+          <TextField label="Name" onChange={handleChange} onBlur={fmk.handleBlur} value={fmk.values.name} name='name' variant="standard" placeholder='Enter Name' fullWidth helperText={fmk.touched.name && fmk.errors.name?<Typography style={errorStyle}>{fmk.errors.name}</Typography>:""}  />
 
-          <TextField label="Email" onChange={fmk.handleChange} onBlur={fmk.handleBlur} value={fmk.values.email} name='email' variant="standard" placeholder='Enter Email' fullWidth helperText={fmk.touched.email && fmk.errors.email?<Typography style={errorStyle}>{fmk.errors.email}</Typography>:""} />
+          <TextField label="Email" onChange={handleChange} onBlur={fmk.handleBlur} value={fmk.values.email} name='email' variant="standard" placeholder='Enter Email' fullWidth helperText={fmk.touched.email && fmk.errors.email?<Typography style={errorStyle}>{fmk.errors.email}</Typography>:""} />
 
           <FormControl style={{ marginTop: 5 }}>
             <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
             <RadioGroup
               aria-labelledby="Gender"
               name="gender"
-              onChange={fmk.handleChange} value={fmk.values.gender}
+              onChange={handleChange} value={fmk.values.gender}
               style={{ display: 'initial' }}
             >
               <FormControlLabel value="female" control={<Radio />} label="Female" />
@@ -97,11 +108,11 @@ export default function SignUp() {
           {fmk.touched.gender && fmk.errors.gender?<div style={{color:'red'}}>{fmk.errors.gender}</div>:""}
           </FormHelperText>
 
-          <TextField label="Phone Number" onChange={fmk.handleChange} onBlur={fmk.handleBlur} value={fmk.values.phoneNum} name='phoneNum' variant="standard" placeholder='Enter Phone Number' fullWidth  helperText={fmk.touched.phoneNum && fmk.errors.phoneNum?<Typography style={errorStyle}>{fmk.errors.phoneNum}</Typography>:""}/>
+          <TextField label="Phone Number" onChange={handleChange} onBlur={fmk.handleBlur} value={fmk.values.phoneNum} name='phoneNum' variant="standard" placeholder='Enter Phone Number' fullWidth  helperText={fmk.touched.phoneNum && fmk.errors.phoneNum?<Typography style={errorStyle}>{fmk.errors.phoneNum}</Typography>:""}/>
 
-          <TextField type='password' label="Password" onChange={fmk.handleChange} onBlur={fmk.handleBlur}  value={fmk.values.password} name='password' variant="standard" placeholder='Enter Password' fullWidth  helperText={fmk.touched.password && fmk.errors.password?<Typography style={errorStyle}>{fmk.errors.password}</Typography>:""}/>
+          <TextField type='password' label="Password" onChange={handleChange} onBlur={fmk.handleBlur}  value={fmk.values.password} name='password' variant="standard" placeholder='Enter Password' fullWidth  helperText={fmk.touched.password && fmk.errors.password?<Typography style={errorStyle}>{fmk.errors.password}</Typography>:""}/>
 
-          <TextField type='password' label="Confirm Password" onChange={fmk.handleChange} onBlur={fmk.handleBlur}  value={fmk.values.confirmPassword} name='confirmPassword' variant="standard" placeholder='Confirm Password' fullWidth  helperText={fmk.touched.confirmPassword && fmk.errors.confirmPassword?<Typography style={errorStyle}>{fmk.errors.confirmPassword}</Typography>:""}/>
+          <TextField type='password' label="Confirm Password" onChange={handleChange} onBlur={fmk.handleBlur}  value={fmk.values.confirmPassword} name='confirmPassword' variant="standard" placeholder='Confirm Password' fullWidth  helperText={fmk.touched.confirmPassword && fmk.errors.confirmPassword?<Typography style={errorStyle}>{fmk.errors.confirmPassword}</Typography>:""}/>
 
           <FormControlLabel control={
             <Checkbox name='termsAndConditions' onChange={fmk.handleChange} value={fmk.values.termsAndConditions} color='primary' />
