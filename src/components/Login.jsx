@@ -67,7 +67,7 @@ export default function Login({onTabChange}) {
         <form onSubmit={fmk.handleSubmit}>
         <TextField name='email' value={fmk.values.email} onBlur={fmk.handleBlur} onChange={handleChange} label="Email" variant="standard" placeholder='Enter Email' fullWidth  helperText={fmk.errors.email && fmk.touched.email ?<Typography style={errorStyle}>{fmk.errors.email}</Typography>:""}/>
 
-        <TextField /*type='password'*/ name='password' value={fmk.values.password} onBlur={fmk.handleBlur} onChange={handleChange} label="Password" variant="standard" placeholder='Enter Password' fullWidth  helperText={fmk.errors.password && fmk.touched.password ?<Typography style={errorStyle}>{fmk.errors.password}</Typography>:""}/>
+        <TextField type='password' name='password' value={fmk.values.password} onBlur={fmk.handleBlur} onChange={handleChange} label="Password" variant="standard" placeholder='Enter Password' fullWidth  helperText={fmk.errors.password && fmk.touched.password ?<Typography style={errorStyle}>{fmk.errors.password}</Typography>:""}/>
 
         <FormControlLabel control={
           <Checkbox name='remembereMe' onChange={fmk.handleChange} value={fmk.values.remembereMe} color='primary' />
